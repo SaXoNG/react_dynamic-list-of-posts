@@ -100,7 +100,7 @@ export const PostDetails: React.FC<Props> = ({
             </>
           )}
 
-        {!showForm && !loading && (
+        {!showForm && !loading && error !== ErrorType.FetchComments && (
           <button
             data-cy="WriteCommentButton"
             type="button"
