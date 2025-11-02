@@ -83,6 +83,7 @@ export const App = () => {
 
                 {selectedUser &&
                   loading !== Load.Posts &&
+                  error !== ErrorType.FetchPosts &&
                   posts.length === 0 && (
                     <div
                       className="notification is-warning"
