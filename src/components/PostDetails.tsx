@@ -65,7 +65,7 @@ export const PostDetails: React.FC<Props> = ({
 
         {comments.length > 0 &&
           loading !== Load.Comments &&
-          error !== ErrorType.DeleteComment && (
+          error !== ErrorType.FetchComments && (
             <>
               <p className="title is-4">Comments:</p>
 
