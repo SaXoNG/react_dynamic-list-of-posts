@@ -48,7 +48,7 @@ export const PostDetails: React.FC<Props> = ({
     <div className="content" data-cy="PostDetails">
       <div className="content" data-cy="PostDetails">
         <div className="block">
-          <h2 data-cy="PostTitle">{selectedPost?.title}</h2>
+          <h2 data-cy="PostTitle">{`#${selectedPost.id}: ${selectedPost?.title}`}</h2>
 
           <p data-cy="PostBody">{selectedPost?.body}</p>
         </div>
