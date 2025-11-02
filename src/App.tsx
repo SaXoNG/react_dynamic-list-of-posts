@@ -123,7 +123,6 @@ export const App = () => {
                   loading={loading}
                   error={error}
                   setComments={setComments}
-                  setError={setError}
                 />
               )}
             </div>

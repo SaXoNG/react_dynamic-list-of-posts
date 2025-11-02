@@ -13,7 +13,6 @@ type Props = {
   loading: Load;
   error: ErrorType;
   setComments: React.Dispatch<React.SetStateAction<Comment[] | []>>;
-  setError: (value: ErrorType) => void;
 };
 
 export const PostDetails: React.FC<Props> = ({
@@ -22,7 +21,6 @@ export const PostDetails: React.FC<Props> = ({
   loading,
   error,
   setComments,
-  setError,
 }) => {
   const [showForm, setShowForm] = useState(false);
 
@@ -36,95 +34,83 @@ export const PostDetails: React.FC<Props> = ({
 
       setComments(newComments);
 
-      client
-        .delete(`/comments/${id}`)
-        .catch(
-          () => (setComments(comments), setError(ErrorType.DeleteComment)),
-        );
+      client.delete(`/comments/${id}`).catch(() => setComments(comments));
     }
   };
 
   return (
     <div className="content" data-cy="PostDetails">
-      <div className="content" data-cy="PostDetails">
-        <div className="block">
-          <h2 data-cy="PostTitle">{`#${selectedPost.id}: ${selectedPost?.title}`}</h2>
+      <div className="block">
+        <h2 data-cy="PostTitle">{`#${selectedPost.id}: ${selectedPost?.title}`}</h2>
 
-          <p data-cy="PostBody">{selectedPost?.body}</p>
-        </div>
+        <p data-cy="PostBody">{selectedPost?.body}</p>
+      </div>
 
-        <div className="block">
-          {loading === Load.Comments && <Loader />}
+      <div className="block">
+        {loading === Load.Comments && <Loader />}
 
-          {error === ErrorType.FetchComments && (
-            <div className="notification is-danger" data-cy="CommentsError">
-              Something went wrong
-            </div>
-          )}
+        {error === ErrorType.FetchComments && (
+          <div className="notification is-danger" data-cy="CommentsError">
+            Something went wrong
+          </div>
+        )}
 
-          {comments.length === 0 && !loading && (
-            <p className="title is-4" data-cy="NoCommentsMessage">
-              No comments yet
-            </p>
-          )}
+        {comments.length === 0 && !loading && (
+          <p className="title is-4" data-cy="NoCommentsMessage">
+            No comments yet
+          </p>
+        )}
 
-          {comments.length > 0 && loading !== Load.Comments && (
-            <>
-              <p className="title is-4">Comments:</p>
+        {comments.length > 0 && loading !== Load.Comments && (
+          <>
+            <p className="title is-4">Comments:</p>
 
-              {comments.map(comm => {
-                return (
-                  <article
-                    className="message is-small"
-                    data-cy="Comment"
-                    key={comm.id}
-                  >
-                    <div className="message-header">
-                      <a
-                        href="mailto:misha@mate.academy"
-                        data-cy="CommentAuthor"
-                      >
-                        {comm.name}
-                      </a>
-                      <button
-                        data-cy="CommentDelete"
-                        type="button"
-                        className="delete is-small"
-                        aria-label="delete"
-                        onClick={() => handleDeleteComment(comm.id)}
-                      >
-                        delete button
-                      </button>
-                    </div>
+            {comments.map(comm => {
+              return (
+                <article
+                  className="message is-small"
+                  data-cy="Comment"
+                  key={comm.id}
+                >
+                  <div className="message-header">
+                    <a href={`mailto:${comm.email}`} data-cy="CommentAuthor">
+                      {comm.name}
+                    </a>
+                    <button
+                      data-cy="CommentDelete"
+                      type="button"
+                      className="delete is-small"
+                      aria-label="delete"
+                      onClick={() => handleDeleteComment(comm.id)}
+                    >
+                      delete button
+                    </button>
+                  </div>
 
-                    <div className="message-body" data-cy="CommentBody">
-                      {comm.body}
-                    </div>
-                  </article>
-                );
-              })}
-            </>
-          )}
+                  <div className="message-body" data-cy="CommentBody">
+                    {comm.body}
+                  </div>
+                </article>
+              );
+            })}
+          </>
+        )}
 
-          {!showForm && !loading && (
-            <button
-              data-cy="WriteCommentButton"
-              type="button"
-              className="button is-link"
-              onClick={() => setShowForm(true)}
-            >
-              Write a comment
-            </button>
-          )}
-        </div>
-
-        {showForm && (
-          <NewCommentForm
-            setComments={setComments}
-            selectedPost={selectedPost}
-          />
+        {!showForm && !loading && (
+          <button
+            data-cy="WriteCommentButton"
+            type="button"
+            className="button is-link"
+            onClick={() => setShowForm(true)}
+          >
+            Write a comment
+          </button>
         )}
       </div>
+
+      {showForm && (
+        <NewCommentForm setComments={setComments} selectedPost={selectedPost} />
+      )}
     </div>
   );
 };

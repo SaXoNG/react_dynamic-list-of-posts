@@ -49,6 +49,11 @@ export const NewCommentForm: React.FC<Props> = ({
     setName('');
     setEmail('');
     setBody('');
+    setErrors({
+      name: '',
+      email: '',
+      comment: '',
+    });
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -77,12 +82,10 @@ export const NewCommentForm: React.FC<Props> = ({
         email,
         body,
       })
-      .then(
-        res => (
-          setComments(prev => (prev ? [...prev, res] : [res])), setBody('')
-        ),
-      )
-      .catch()
+      .then(res => {
+        setComments(prev => (prev ? [...prev, res] : [res]));
+        setBody('');
+      })
       .finally(() => setIsLoading(false));
   };
 
@@ -192,7 +195,6 @@ export const NewCommentForm: React.FC<Props> = ({
             className={classNames('button is-link', {
               'is-loading': isLoading,
             })}
-            onClick={handleSubmit}
           >
             Add
           </button>
