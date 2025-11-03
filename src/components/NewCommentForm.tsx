@@ -86,6 +86,7 @@ export const NewCommentForm: React.FC<Props> = ({
         setComments(prev => (prev ? [...prev, res] : [res]));
         setBody('');
       })
+      .catch(() => alert('Something went wrong, try to add comment later!'))
       .finally(() => setIsLoading(false));
   };
 

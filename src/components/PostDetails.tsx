@@ -34,7 +34,10 @@ export const PostDetails: React.FC<Props> = ({
 
       setComments(newComments);
 
-      client.delete(`/comments/${id}`).catch(() => setComments(comments));
+      client.delete(`/comments/${id}`).catch(() => {
+        setComments(comments);
+        alert("Something went wrong, try again later!");
+      });
     }
   };
 
